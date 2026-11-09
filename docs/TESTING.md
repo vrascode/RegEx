@@ -49,7 +49,7 @@ O texto original é comparado integralmente, e a extração precisa retornar
 exatamente os três endereços esperados, em ordem. Os testes de borda evitam
 extrair partes de endereços inválidos como `ab@cd.com.xyz`.
 
-## Resultado verificado na análise inicial
+## Resultado verificado após a ampliação da suíte
 
 Ambiente local: **Python 3.12.10**, Windows. Resultado observado:
 
@@ -58,7 +58,7 @@ python -m py_compile validador_formulario.py
 # Código de saída: 0; sem mensagens de erro.
 
 python -m unittest discover -v
-Ran 66 tests
+Ran 83 tests
 OK
 ```
 
@@ -66,6 +66,35 @@ O tempo de execução foi omitido por variar entre execuções. Os cenários
 aprovado e rejeitado também foram executados em processos reais, com
 conferência do código de saída e dos três e-mails extraídos. Veja as
 [entradas e saídas](EXAMPLES.md).
+
+A análise inicial executou **66 métodos**. Foram acrescentados **17 métodos**,
+preservando os anteriores e a lógica do programa:
+
+| Grupo | Métodos atuais | Casos adicionados |
+|---|---|---|
+| Nome | 12 | Todas as letras ASCII, controles e espaços Unicode |
+| CPF | 12 | Zeros iniciais, cada separador da máscara e mistura de algarismos Unicode |
+| E-mail | 22 | Mínimos de símbolos, países em maiúsculas/repetidos, espaços em qualquer posição e segmentos internos |
+| Telefone | 10 | Cada separador, mistura de algarismos Unicode, prefixos internacionais e ramais |
+| Extração | 20 | Combinações de bordas, separadores compartilhados, inválidos entre válidos e países em maiúsculas |
+| Formulário | 7 | Integração existente preservada |
+| **Total** | **83** | **17 métodos novos** |
+
+Esse número descreve a suíte executada e não representa um percentual de
+cobertura. Não foi acrescentada dependência para medir cobertura de linhas.
+
+## Conferências da documentação e da configuração
+
+Na preparação local, o workflow foi interpretado por um parser YAML 1.2 já
+disponível no ambiente, sem adicionar dependências ao projeto. Foram
+conferidos os gatilhos para `main`, a versão Python e os dois comandos de
+verificação. Isso valida a sintaxe YAML e os campos conferidos; o resultado
+de execução do GitHub Actions depende da publicação.
+
+Os blocos Python dos documentos também foram executados localmente e os
+links relativos e âncoras internas foram conferidos. Os exemplos de terminal
+incluem as entradas do usuário; a captura de um subprocesso com entrada
+redirecionada não ecoa esses valores automaticamente.
 
 ## GitHub Actions
 

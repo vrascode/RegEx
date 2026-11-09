@@ -124,3 +124,18 @@ A extração do texto fixo ocorre em seguida, inclusive após rejeição.
 
 Consulte os [exemplos executáveis](EXAMPLES.md) e a
 [estratégia de testes](TESTING.md).
+
+## Rastreabilidade entre requisitos, código e testes
+
+| Requisito | Função pública | Classe de teste |
+|---|---|---|
+| Nome | `validar_nome(nome)` | `TestNome` |
+| CPF | `validar_cpf(cpf)` | `TestCPF` |
+| E-mail | `validar_email(email)` | `TestEmail` |
+| Telefone | `validar_telefone(telefone)` | `TestTelefone` |
+| Extração | `extrair_emails(texto)` | `TestExtracao` |
+| Integração dos campos | `processar_formulario()` e `main()` | `TestFormulario` |
+
+As funções de validação recebem strings e retornam `True` ou `False`.
+`extrair_emails()` recebe uma string e retorna `list[str]`. O fluxo interativo
+escreve as mensagens no terminal; não há persistência de formulários em disco.
