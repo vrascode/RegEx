@@ -146,6 +146,32 @@ class TestCPF(unittest.TestCase):
 
 
 class TestEmail(unittest.TestCase):
+    def test_minimo_dois_simbolos_em_cada_parte(self):
+        for parte in ("a_", "_-", ".-", "é9", "用户"):
+            with self.subTest(parte=parte):
+                self.assertTrue(validador.validar_email(f"{parte}@cd.com"))
+                self.assertTrue(validador.validar_email(f"ab@{parte}.com"))
+
+    def test_pais_nao_aceita_maiusculas_ou_repeticao(self):
+        for pais in ("br", "ao", "pt", "es", "de", "uk"):
+            for sufixo in (pais.upper(), pais.title(), pais + "." + pais):
+                with self.subTest(sufixo=sufixo):
+                    self.assertFalse(validador.validar_email(f"ab@cd.com.{sufixo}"))
+
+    def test_espacos_em_qualquer_posicao_do_endereco(self):
+        original = "ab@cd.com.br"
+        for indice in range(len(original) + 1):
+            for espaco in (" ", "\t", "\n", "\r", "\u00a0"):
+                email = original[:indice] + espaco + original[indice:]
+                with self.subTest(email=email):
+                    self.assertFalse(validador.validar_email(email))
+
+    def test_segmento_interno_so_vira_registro_com_tres_minusculas(self):
+        for segmento in ("ABC", "abC", "ab1", "abcd", "ab"):
+            with self.subTest(segmento=segmento):
+                self.assertTrue(validador.validar_email(f"ab@cd.{segmento}.empresa.com"))
+        self.assertFalse(validador.validar_email("ab@cd.abc.empresa.com"))
+
     def test_validos_sem_pais(self):
         for email in (*EMAILS_ESPERADOS, "ab@cd.com"):
             with self.subTest(email=email):
