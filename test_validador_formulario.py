@@ -261,6 +261,28 @@ class TestEmail(unittest.TestCase):
 
 
 class TestTelefone(unittest.TestCase):
+    def test_cada_separador_da_mascara_e_obrigatorio(self):
+        original = "(11)98765-4321"
+        for indice in (0, 3, 9):
+            for separador in ("", " ", "/", "\u2010", "\uff08", "\uff09"):
+                telefone = original[:indice] + separador + original[indice + 1:]
+                with self.subTest(telefone=telefone):
+                    self.assertFalse(validador.validar_telefone(telefone))
+
+    def test_nao_aceita_digito_unicode_em_nenhuma_posicao(self):
+        for original in ("11987654321", "(11)98765-4321"):
+            for indice, caractere in enumerate(original):
+                if caractere.isascii() and caractere.isdigit():
+                    telefone = original[:indice] + "\uff11" + original[indice + 1:]
+                    with self.subTest(telefone=telefone):
+                        self.assertFalse(validador.validar_telefone(telefone))
+
+    def test_codigo_internacional_e_ramal_fora_do_formato(self):
+        for telefone in ("+5511987654321", "5511987654321", "+55(11)98765-4321",
+                         "(11)98765-4321 ramal 12", "11987654321x12"):
+            with self.subTest(telefone=telefone):
+                self.assertFalse(validador.validar_telefone(telefone))
+
     def test_sem_pontuacao(self):
         self.assertTrue(validador.validar_telefone("11987654321"))
 
