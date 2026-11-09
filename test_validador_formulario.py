@@ -86,6 +86,27 @@ class TestNome(unittest.TestCase):
 
 
 class TestCPF(unittest.TestCase):
+    def test_zeros_iniciais_nos_dois_formatos(self):
+        for cpf in ("00123456789", "001.234.567-89"):
+            with self.subTest(cpf=cpf):
+                self.assertTrue(validador.validar_cpf(cpf))
+
+    def test_cada_separador_da_mascara_e_obrigatorio(self):
+        original = "123.456.789-01"
+        for indice in (3, 7, 11):
+            for separador in ("", " ", "/", "\u2010", "\uff0e"):
+                cpf = original[:indice] + separador + original[indice + 1:]
+                with self.subTest(cpf=cpf):
+                    self.assertFalse(validador.validar_cpf(cpf))
+
+    def test_nao_aceita_digito_unicode_misturado_com_ascii(self):
+        for original in ("12345678901", "123.456.789-01"):
+            for indice, caractere in enumerate(original):
+                if caractere.isascii() and caractere.isdigit():
+                    cpf = original[:indice] + "\u0661" + original[indice + 1:]
+                    with self.subTest(cpf=cpf):
+                        self.assertFalse(validador.validar_cpf(cpf))
+
     def test_sem_pontuacao(self):
         self.assertTrue(validador.validar_cpf("12345678901"))
 
