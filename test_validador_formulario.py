@@ -316,6 +316,30 @@ class TestTelefone(unittest.TestCase):
 
 
 class TestExtracao(unittest.TestCase):
+    def test_combinacoes_de_separadores_ao_redor_do_endereco(self):
+        for inicio in ("", " ", "\n", "(", "[", "<", "{", '"', "'", ":", ";", ",", "!", "?"):
+            for fim in ("", " ", "\n", ")", "]", ">", "}", '"', "'", ":", ";", ",", "!", "?", "...)"):
+                with self.subTest(inicio=inicio, fim=fim):
+                    self.assertEqual(validador.extrair_emails(inicio + "ab@cd.com" + fim), ["ab@cd.com"])
+
+    def test_separador_compartilhado_nao_e_consumido(self):
+        for separador in (",", ";", ":", "!", "?", "'", '"', "\n"):
+            with self.subTest(separador=separador):
+                self.assertEqual(validador.extrair_emails(f"ab@cd.com{separador}xy@ef.org"),
+                                 ["ab@cd.com", "xy@ef.org"])
+
+    def test_invalidos_entre_validos_nao_interrompem_varredura(self):
+        invalidos = ("a@cd.com", "ab@@cd.com", "ab@cd.com.xyz", "ab@cd.com.fr", "ab@cd..com")
+        for invalido in invalidos:
+            with self.subTest(invalido=invalido):
+                texto = f"ab@cd.com; {invalido}; xy@ef.org"
+                self.assertEqual(validador.extrair_emails(texto), ["ab@cd.com", "xy@ef.org"])
+
+    def test_paises_maiusculos_nao_produzem_extracao_parcial(self):
+        for pais in ("BR", "AO", "PT", "ES", "DE", "UK"):
+            with self.subTest(pais=pais):
+                self.assertEqual(validador.extrair_emails(f"(ab@cd.com.{pais})."), [])
+
     def test_texto_original_exato(self):
         self.assertEqual(validador.TEXTO_ENUNCIADO, TEXTO_ORIGINAL)
 
