@@ -1,4 +1,4 @@
-<h1 align="center">LFA Form Validator</h1>
+<h1 align="center">RegEx — Validador de Formulário LFA</h1>
 
 <p align="center">
   Validação de formulários e extração de e-mails utilizando expressões regulares em Python.
@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://www.python.org/"><img alt="Python 3" src="https://img.shields.io/badge/Python-3-3776AB?logo=python&amp;logoColor=white"></a>
-  <a href="https://github.com/vrascode/lfa-form-validator/actions/workflows/python-tests.yml"><img alt="Testes automatizados na branch main" src="https://github.com/vrascode/lfa-form-validator/actions/workflows/python-tests.yml/badge.svg?branch=main"></a>
+  <a href="https://github.com/vrascode/RegEx/actions/workflows/python-tests.yml"><img alt="Testes automatizados na branch main" src="https://github.com/vrascode/RegEx/actions/workflows/python-tests.yml/badge.svg?branch=main"></a>
   <a href=".github/workflows/python-tests.yml"><img alt="GitHub Actions CI" src="https://img.shields.io/badge/GitHub%20Actions-CI-2088FF?logo=githubactions&amp;logoColor=white"></a>
   <a href="#informações-acadêmicas"><img alt="Disciplina LFA" src="https://img.shields.io/badge/Disciplina-LFA-596579"></a>
 </p>
@@ -27,6 +27,8 @@ e aprova o formulário quando todos atendem às regras.
 
 O código e os testes usam exclusivamente a biblioteca padrão do Python.
 As regras reproduzem a interpretação acadêmica descrita na documentação.
+
+Repositório oficial: [vrascode/RegEx](https://github.com/vrascode/RegEx).
 
 ## Objetivo acadêmico
 
@@ -143,8 +145,8 @@ Não há pacotes a instalar com `pip`.
 Para obter o projeto pelo GitHub:
 
 ```powershell
-git clone https://github.com/vrascode/lfa-form-validator.git
-Set-Location lfa-form-validator
+git clone https://github.com/vrascode/RegEx.git
+Set-Location RegEx
 ```
 
 Se já tiver os arquivos, abra o terminal na pasta que contém
@@ -179,19 +181,19 @@ sem resultado. Consulte a [estratégia de testes](docs/TESTING.md).
 ## Estrutura do projeto
 
 ```text
-lfa-form-validator/
+Trabalho 1 LFA/
 ├── .github/
 │   └── workflows/
 │       └── python-tests.yml
 ├── docs/
 │   ├── REQUIREMENTS.md
 │   ├── REGEX_EXPLAINED.md
-│   ├── TESTING.md
-│   └── EXAMPLES.md
-├── .gitignore
-├── README.md
+│   ├── EXAMPLES.md
+│   └── TESTING.md
 ├── validador_formulario.py
-└── test_validador_formulario.py
+├── test_validador_formulario.py
+├── README.md
+└── .gitignore
 ```
 
 ## Explicação das expressões regulares

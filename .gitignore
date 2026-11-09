@@ -40,3 +40,6 @@ Desktop.ini
 
 # Local preparation records; never part of the public repository
 .publication/
+
+# Legacy nested project; keep local until an external backup is verified
+/lfa1/
