@@ -66,3 +66,21 @@ O tempo de execução foi omitido por variar entre execuções. Os cenários
 aprovado e rejeitado também foram executados em processos reais, com
 conferência do código de saída e dos três e-mails extraídos. Veja as
 [entradas e saídas](EXAMPLES.md).
+
+## GitHub Actions
+
+O workflow [python-tests.yml](../.github/workflows/python-tests.yml) executa
+em pushes para `main` e pull requests cujo destino é `main`, em Ubuntu com
+Python 3.12. Ele faz checkout, configura o interpretador, compila o arquivo
+principal e executa a mesma suíte com `unittest discover -v`.
+
+Não instala dependências do projeto, não usa secrets e não consulta serviços
+externos durante os testes. A infraestrutura do próprio GitHub Actions
+obtém as actions e configura o Python. As permissões do token são limitadas
+à leitura do conteúdo; qualquer comando que termine com erro falha o job.
+
+Os comandos assumem que os arquivos Python estão na **raiz do repositório**.
+O badge do README consulta o estado real desse workflow na branch `main`;
+antes da primeira publicação/execução ele pode aparecer sem resultado.
+Para confirmar uma execução remota, abra a aba Actions e confira o commit
+associado. A configuração local não comprova execução bem-sucedida no GitHub.
