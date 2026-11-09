@@ -31,6 +31,22 @@ Equipe de Atendimento"""
 
 
 class TestNome(unittest.TestCase):
+    def test_todas_as_letras_ascii(self):
+        for letra in "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz":
+            with self.subTest(letra=letra):
+                self.assertTrue(validador.validar_nome(letra))
+
+    def test_caracteres_de_controle_em_qualquer_posicao(self):
+        for controle in ("\0", "\r", "\n", "\t", "\v", "\f"):
+            for nome in (controle + "Ana", "An" + controle + "a", "Ana" + controle):
+                with self.subTest(nome=nome):
+                    self.assertFalse(validador.validar_nome(nome))
+
+    def test_espacos_unicode_nao_substituem_espaco_ascii(self):
+        for espaco in ("\u2002", "\u2003", "\u2009", "\u202f", "\u3000", "\u200b"):
+            with self.subTest(espaco=repr(espaco)):
+                self.assertFalse(validador.validar_nome("Ana" + espaco + "Silva"))
+
     def test_nomes_do_enunciado(self):
         for nome in ("Matheus Sulino", "Joao Silva", "Maria"):
             with self.subTest(nome=nome):
